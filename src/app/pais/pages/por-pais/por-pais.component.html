@@ -1,0 +1,47 @@
+<div class="animate__animated animate__fadeIn animate__faster">
+    <h2>Por País</h2>
+    <hr>
+    
+    <div class="row">
+        <div class="col">
+            <!-- Este componente debe de emitir el valor (término buscado). Y con ese término, nosotros tendríamos que disparar el servicio 
+                (a través del método buscar del padre, donde está el .subscribe) y dicho servicio debe mandarle la información de los países -->
+            <app-pais-input 
+                (onEnter)="buscar($event)"
+                (onDebounce)="sugerencias($event)"
+                placeholder="Buscar país...">
+            </app-pais-input>
+        </div>
+    </div>
+
+    <ul *ngIf="mostrarSugerencias"
+        class="list-group">
+        <li *ngFor="let pais of paisesSugeridos"
+            class="list-group-item list-group-item-action">
+            <a class="nav-link" style="color: rgb(4, 0, 255);" 
+               [routerLink]="['/pais', pais.cioc]">
+                {{ pais.name }}
+            </a>
+        </li>
+        <li class="list-group-item list-group-item-action"
+            (click)="buscar(termino)">
+            <a class="nav-link" style="color: rgb(4, 0, 255);">
+                Buscar "{{ termino }}"
+            </a>
+        </li>
+    </ul>
+    
+    <hr>
+</div>
+
+<div 
+    *ngIf="hayError"
+    class="alert alert-danger">
+    No se encontró nada con el término {{ termino }}
+</div>
+
+<div *ngIf="paises.length > 0" class="row">
+    <div class="col">
+        <app-pais-tabla [paises]="paises"></app-pais-tabla>
+    </div>
+</div>
